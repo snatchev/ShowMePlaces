@@ -1,0 +1,5 @@
+*.lua
+logs/
+nginx.conf.compiled
+.tup
+proxy_cache
