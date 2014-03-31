@@ -1,14 +1,19 @@
 require 'sinatra'
 require 'faraday'
-require 'faraday-http-cache'
+require 'active_support'
+require 'logger'
 
 http = Faraday.new do |f|
-  f.use :http_cache, shared_cache: false
   f.adapter Faraday.default_adapter
 end
 
+cache = ActiveSupport::Cache::MemoryStore.new
+
 get '/:location' do
-  body = http.get("http://wikitravel.org/en/#{params[:location]}").body
+  body = cache.fetch(params[:location]) do
+    http.get("http://wikitravel.org/en/" + params[:location]).body
+  end
+
   img = body.match(/<a href="\/en\/File:.*>(<img.*\/>)<\/a>/)
   if img
     img[1]  #the first capture group
