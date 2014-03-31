@@ -8,7 +8,7 @@ http = Http('.cache')
 @app.route("/<location>")
 def show_location(location):
     (response, body) = http.request("http://wikitravel.org/en/" + location, "GET")
-    img = re.search('<a href="/en/File:.*>(<img.*/>)</a>', body)
+    img = re.search('<a href="/en/File:.*?>(<img.*?/>)</a>', body)
     if img:
         return img.group(1)
     else:
