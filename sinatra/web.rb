@@ -14,7 +14,7 @@ get '/:location' do
     http.get("http://wikitravel.org/en/" + params[:location]).body
   end
 
-  img = body.match(/<a href="\/en\/File:.*>(<img.*\/>)<\/a>/)
+  img = body.match(/<a href="\/en\/File:.*?>(<img.*?\/>)<\/a>/)
   if img
     img[1]  #the first capture group
   else
