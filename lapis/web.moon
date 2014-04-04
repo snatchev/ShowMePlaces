@@ -1,11 +1,10 @@
-lapis = require 'lapis'
-http = require 'lapis.nginx.http'
+import Lapis from require 'lapis'
+import Http from require 'lapis/nginx/http'
 
-lapis.serve class extends lapis.Application
+Lapis.serve class extends Lapis.Application
   "/:location": =>
-    body, status, headers = http.simple "http://wikitravel.org/en/#{@params.location}"
-    img = string.match(body, '<a href="/en/File:.->(<img.-/>)</a>')
-    if img
+    body, status, headers = Http.request("http://wikitravel.org/en/#{@params.location}")
+    if img = body.match('<a href="/en/File:.->(<img.-/>)</a>')
       img
     else
       status: 404
